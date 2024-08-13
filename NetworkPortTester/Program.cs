@@ -66,11 +66,16 @@ internal class Program
                 NetworkStream stream = client.GetStream();
                 byte[] buffer = new byte[1024];
                 int bytesRead;
+    
+                string remoteIp = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
 
                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
                 {
                     string receivedText = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    Console.WriteLine($"Received: {receivedText}");
+                  
+                    string timeStamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    Console.WriteLine($"[{timeStamp}] Received from {remoteIp}: {receivedText}");
                 }
 
                 client.Close();
